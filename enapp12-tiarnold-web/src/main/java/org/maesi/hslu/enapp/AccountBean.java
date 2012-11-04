@@ -1,4 +1,4 @@
-package main.java.org.maesi.hslu.enapp;
+package org.maesi.hslu.enapp;
 
 import javax.faces.bean.SessionScoped;
 import javax.inject.Inject;

@@ -4,17 +4,17 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_1.xsd" version="2.1">
 	<managed-bean>
 		<managed-bean-name>productBean</managed-bean-name>
-		<managed-bean-class>main.java.org.maesi.hslu.enapp.ProductBean</managed-bean-class>
+		<managed-bean-class>org.maesi.hslu.enapp.ProductBean</managed-bean-class>
 		<managed-bean-scope>request</managed-bean-scope>
 	</managed-bean>
 	<managed-bean>
 		<managed-bean-name>accountBean</managed-bean-name>
-		<managed-bean-class>main.java.org.maesi.hslu.enapp.AccountBean</managed-bean-class>
+		<managed-bean-class>org.maesi.hslu.enapp.AccountBean</managed-bean-class>
 		<managed-bean-scope>session</managed-bean-scope>
 	</managed-bean>
 	<managed-bean>
 		<managed-bean-name>itemsBean</managed-bean-name>
-		<managed-bean-class>main.java.org.maesi.hslu.enapp.ItemsBean</managed-bean-class>
+		<managed-bean-class>org.maesi.hslu.enapp.ItemsBean</managed-bean-class>
 		<managed-bean-scope>session</managed-bean-scope>
 	</managed-bean>
 </faces-config>

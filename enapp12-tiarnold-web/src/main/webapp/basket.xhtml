@@ -1,0 +1,49 @@
+<ui:composition template="template.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<ui:define name="contentheader">Warenkorb</ui:define>
+	<ui:define name="content">
+		<h:dataTable var="product" value="#{productBean.list}">
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Name" />
+				</f:facet>
+				<h:outputText value="#{product.name}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Anzahl" />
+				</f:facet>
+				<h:outputText value="#{itemsBean.items[product.id]}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Preis" />
+				</f:facet>
+				<h:outputText value="#{product.unitprice}" />
+			</h:column>
+			<h:column>
+				<h:form id="itemsForm">
+					<h:commandButton id="add" action="#{itemsBean.add}" image="./images/plus-icon.png" alt="Zum Warenkorb hinzufuegen">
+						<f:setPropertyActionListener target="#{itemsBean.product}" value="#{product.id}" />
+					</h:commandButton>
+					<h:commandButton id="remove" action="#{itemsBean.remove}" image="./images/minus-icon.png" alt="Vom Warenkorb entfernen">
+						<f:setPropertyActionListener target="#{itemsBean.product}" value="#{product.id}" />
+					</h:commandButton>
+				</h:form>
+			</h:column>
+		</h:dataTable>
+		<c:if test="#{!accountBean.loggedIn}">
+			<h:outputText value="Um die Bestellung abzuschliessen, muss man eingeloggt sein." />
+		</c:if>
+		<c:if test="#{accountBean.loggedIn}">
+			<h:form id="checkoutForm">
+				<h:commandButton id="checkout" action="#{itemsBean.checkout}" value="Bestellung abschicken">
+					<f:setPropertyActionListener target="#{itemsBean.customer}" value="#{accountBean.customer.id}" />
+				</h:commandButton>
+			</h:form>
+		</c:if>
+		<h:form id="clearForm">
+			<h:commandButton id="clear" action="#{itemsBean.clearBasket}" value="Warenkorb leeren" />
+		</h:form>
+	</ui:define>
+</ui:composition>

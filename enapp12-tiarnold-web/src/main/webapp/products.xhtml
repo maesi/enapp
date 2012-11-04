@@ -1,0 +1,33 @@
+<ui:composition template="template.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets">
+	<ui:define name="contentheader">Produkt Katalog</ui:define>	
+	<ui:define name="content">		
+		<h:dataTable var="product" value="#{productBean.list}">
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="ID" />
+				</f:facet>
+				<h:outputText value="#{product.id}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Name" />
+				</f:facet>
+				<h:outputText value="#{product.name}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Preis" />
+				</f:facet>
+				<h:outputText value="#{product.unitprice}" />
+			</h:column>
+			<h:column>
+				<h:form id="itemsForm">
+					<h:commandButton id="add" action="#{itemsBean.addFromProducts}" image="./images/plus-icon.png" alt="Zum Warenkorb hinzufuegen">
+						<f:setPropertyActionListener target="#{itemsBean.product}" value="#{product.id}" />
+					</h:commandButton>
+				</h:form>
+			</h:column>
+		</h:dataTable>
+	</ui:define>
+</ui:composition>

@@ -19,7 +19,6 @@ import org.maesi.hslu.enapp.dto.ProductDto;
 import org.maesi.hslu.enapp.dto.PurchaseDto;
 import org.maesi.hslu.enapp.entity.Purchase;
 import org.maesi.hslu.enapp.entity.Purchaseitem;
-import org.maesi.hslu.enapp.ext.postfinance.PaymentPostFinance;
 
 /**
  * Session Bean implementation class PurchaseManager
@@ -30,10 +29,7 @@ public class PurchaseManager {
 
 	@Inject
 	private ProductManager productManager;
-	
-	@Inject
-	private PaymentPostFinance postFinance;
-	
+		
     public void add(Integer aUser, Map<String, Integer> aItems) {
     	Integer _purchaseId = savePurchase(aUser);
     	for(String _productId : aItems.keySet()) {

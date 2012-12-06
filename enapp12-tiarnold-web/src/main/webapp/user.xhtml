@@ -1,0 +1,27 @@
+<ui:composition template="template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<ui:define name="contentheader">Benutzereinstellungen:</ui:define>
+	<ui:define name="content">
+		<h:form id="userForm">
+			<h:panelGrid id="grid" columns="2">
+				<h:outputLabel value="Benutzername" for="userName" />
+				<h:inputText id="userName" value="#{accountBean.customer.name}" />
+				<h:outputLabel value="Passwort:" for="userPassword" />
+				<h:inputSecret id="userPassword" value="#{accountBean.customer.password}" />
+				<h:outputLabel value="Name" for="realName" />
+				<h:inputText id="realName" value="#{accountBean.customer.realname}" />
+				<h:outputLabel value="Adresse" for="adress" />
+				<h:inputText id="adress" value="#{accountBean.customer.adress}" />
+				<h:outputLabel value="E-Mail" for="email" />
+				<h:inputText id="email" value="#{accountBean.customer.email}" />
+				<h:commandButton id="login" value="Speichern"
+					action="#{accountBean.save}" />
+			</h:panelGrid>
+		</h:form>
+		<h:link value="Zu den vergangen Bestellungen" outcome="purchase" />
+	</ui:define>
+</ui:composition>

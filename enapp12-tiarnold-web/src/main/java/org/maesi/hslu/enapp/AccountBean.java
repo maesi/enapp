@@ -1,7 +1,10 @@
 package org.maesi.hslu.enapp;
 
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 
 import org.maesi.hslu.enapp.boundry.CustomerManager;
 import org.maesi.hslu.enapp.dto.CustomerDto;
@@ -11,31 +14,49 @@ public class AccountBean {
 
 	@Inject 
 	CustomerManager customerManager;
-	
-	private CustomerDto customer = new CustomerDto();
-		
-	public String login() {
-		customerManager.login(customer);
-		if(isLoggedIn()) {
-			return "index";	
-		}
-		return "login";
-	}
+
+	private CustomerDto customer;
+	private CustomerDto newCustomer = new CustomerDto();
 	
 	public String logout() {
-		setCustomer(new CustomerDto());
-		return "index";	
+		String result="/index?faces-redirect=true";
+	     
+	    FacesContext context = FacesContext.getCurrentInstance();
+	    HttpServletRequest request = (HttpServletRequest)context.getExternalContext().getRequest();
+	     
+	    try {
+	      request.logout();
+	      customer = null;
+	    } catch (ServletException e) {
+	      result = "/loginError?faces-redirect=true";
+	    }
+	     
+	    return result;
 	}
 
 	public CustomerDto getCustomer() {
+		if(customer == null && isLoggedIn()) {
+			String _username = FacesContext.getCurrentInstance().getExternalContext().getUserPrincipal().getName();
+			customer = customerManager.getByName(_username);
+		}
 		return customer;
 	}
-
-	public void setCustomer(CustomerDto customer) {
-		this.customer = customer;
-	}	
+	
+	public CustomerDto getNewCustomer() {
+		return newCustomer;
+	}
+	
+	public String save() {
+		customerManager.update(customer);
+		return "";	
+	}
+	
+	public String create() {
+		customerManager.create(newCustomer);
+		return "login.xhtml";	
+	}
 	
 	public boolean isLoggedIn() {
-		return customer.getId() > 0;
+		return FacesContext.getCurrentInstance().getExternalContext().getUserPrincipal() != null;
 	}
 }

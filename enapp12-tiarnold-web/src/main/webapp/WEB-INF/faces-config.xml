@@ -17,4 +17,9 @@
 		<managed-bean-class>org.maesi.hslu.enapp.ItemsBean</managed-bean-class>
 		<managed-bean-scope>session</managed-bean-scope>
 	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>purchaseBean</managed-bean-name>
+		<managed-bean-class>org.maesi.hslu.enapp.PurchaseBean</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
 </faces-config>

@@ -15,18 +15,18 @@ public class ItemsBean {
 	@Inject 
 	PurchaseManager purchaseManager;
 	
-	private Map<Integer, Integer> items;
+	private Map<String, Integer> items;
 	
 	public ItemsBean() {
 		clearBasketInternal();
 	}
 	
 	
-	public Map<Integer, Integer> getItems() {
+	public Map<String, Integer> getItems() {
 		return items;
 	}
 	
-	public Set<Integer> getItemKeys() {
+	public Set<String> getItemKeys() {
 		return items.keySet();
 	}
 		
@@ -42,7 +42,7 @@ public class ItemsBean {
 	}
 	
 	private void clearBasketInternal() {
-		items = new HashMap<Integer, Integer>();
+		items = new HashMap<String, Integer>();
 	}
 	
 	public String addFromProducts() {
@@ -80,8 +80,8 @@ public class ItemsBean {
 		}
 	}
 
-	private Integer product;
-	public void setProduct(Integer product) {
+	private String product;
+	public void setProduct(String product) {
 		this.product = product;
 	}
 	

@@ -17,7 +17,8 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "customer")
-@NamedQueries({ @NamedQuery(name = "customer.findByNameAndPassword", query = "SELECT c FROM Customer c  WHERE c.username = :username AND c.password =:password") })
+@NamedQueries({ @NamedQuery(name = "customer.findByNameAndPassword", query = "SELECT c FROM Customer c  WHERE c.username = :username AND c.password =:password"), 
+		@NamedQuery(name = "customer.findByUsername", query = "SELECT c FROM Customer c  WHERE c.username = :username")})
 public class Customer implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -34,6 +35,9 @@ public class Customer implements Serializable {
 
 	@Column(length = 45)
 	private String name;
+	
+	@Column(length = 32)
+	private String navisionid;
 
 	@Column(length = 32)
 	private String password;
@@ -90,6 +94,14 @@ public class Customer implements Serializable {
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+
+	public String getNavisionid() {
+		return navisionid;
+	}
+
+	public void setNavisionid(String navisionid) {
+		this.navisionid = navisionid;
 	}
 
 }

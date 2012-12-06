@@ -25,8 +25,8 @@ public class Purchaseitem implements Serializable {
 	@Column(precision=10)
 	private BigDecimal lineamount;
 
-	@Column(nullable=false)
-	private int productid;
+	@Column(nullable=false, length=30)
+	private String productid;
 
 	@Column(nullable=false)
 	private int purchaseid;
@@ -64,11 +64,11 @@ public class Purchaseitem implements Serializable {
 		this.lineamount = lineamount;
 	}
 
-	public int getProductid() {
+	public String getProductid() {
 		return this.productid;
 	}
 
-	public void setProductid(int productid) {
+	public void setProductid(String productid) {
 		this.productid = productid;
 	}
 

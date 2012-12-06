@@ -3,7 +3,22 @@
 	<ui:define name="contentheader">Registrierung</ui:define>
 	<ui:define name="content">
 		<c:if test="#{!accountBean.loggedIn}">
-			<h:outputText>RegisterForm</h:outputText>
+			<h:form id="userForm">
+			<h:panelGrid id="grid" columns="2">
+				<h:outputLabel value="Benutzername" for="userName" />
+				<h:inputText id="userName" value="#{accountBean.newCustomer.name}" />
+				<h:outputLabel value="Passwort:" for="userPassword" />
+				<h:inputSecret id="userPassword" value="#{accountBean.newCustomer.password}" />
+				<h:outputLabel value="Name" for="realName" />
+				<h:inputText id="realName" value="#{accountBean.newCustomer.realname}" />
+				<h:outputLabel value="Adresse" for="adress" />
+				<h:inputText id="adress" value="#{accountBean.newCustomer.adress}" />
+				<h:outputLabel value="E-Mail" for="email" />
+				<h:inputText id="email" value="#{accountBean.newCustomer.email}" />
+				<h:commandButton id="login" value="Speichern"
+					action="#{accountBean.create}" />
+			</h:panelGrid>
+		</h:form>
 		</c:if>
 		<c:if test="#{accountBean.loggedIn}">
 			<h:outputText>Um sich zu registrieren, darf man nicht eingeloggt sein.</h:outputText>

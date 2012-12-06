@@ -2,6 +2,7 @@ package org.maesi.hslu.enapp.entity;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
 import java.util.Date;
 
 
@@ -11,6 +12,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name="purchase")
+@NamedQueries({ @NamedQuery(name = "purchase.findAllByUserId", query = "SELECT p FROM Purchase p  WHERE p.customerid = :userId")})
 public class Purchase implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -26,6 +28,9 @@ public class Purchase implements Serializable {
 
 	@Column(length=15)
 	private String status;
+	
+	@Column
+	private int paymentid;
 
 	public Purchase() {
 	}
@@ -60,6 +65,14 @@ public class Purchase implements Serializable {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public int getPaymentid() {
+		return paymentid;
+	}
+
+	public void setPaymentid(int paymentid) {
+		this.paymentid = paymentid;
 	}
 
 }

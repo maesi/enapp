@@ -22,10 +22,14 @@
 		<c:if test="#{!accountBean.loggedIn}">
 			<h:link value="Login" outcome="login" />
 			<br />
-			<!-- <h:link value="Registrieren" outcome="register" />
-			<br /> -->
+			<h:link value="Registrieren" outcome="register" />
+			<br />
 		</c:if>
 		<c:if test="#{accountBean.loggedIn}">
+			<h:link value="Bestellungen" outcome="purchase" />
+			<br />
+			<h:link value="Einstellungen" outcome="user" />
+			<br />
 			<h:link value="Logout" outcome="login" />
 			<br />
 		</c:if>

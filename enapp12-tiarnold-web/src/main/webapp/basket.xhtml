@@ -21,27 +21,8 @@
 				</f:facet>
 				<h:outputText value="#{product.unitprice}" />
 			</h:column>
-			<h:column>
-				<h:form id="itemsForm">
-					<h:commandButton id="add" action="#{itemsBean.add}" image="./images/plus-icon.png" alt="Zum Warenkorb hinzufuegen">
-						<f:setPropertyActionListener target="#{itemsBean.product}" value="#{product.id}" />
-					</h:commandButton>
-					<h:commandButton id="remove" action="#{itemsBean.remove}" image="./images/minus-icon.png" alt="Vom Warenkorb entfernen">
-						<f:setPropertyActionListener target="#{itemsBean.product}" value="#{product.id}" />
-					</h:commandButton>
-				</h:form>
-			</h:column>
 		</h:dataTable>
-		<c:if test="#{!accountBean.loggedIn}">
-			<h:outputText value="Um die Bestellung abzuschliessen, muss man eingeloggt sein." />
-		</c:if>
-		<c:if test="#{accountBean.loggedIn}">
-			<h:form id="checkoutForm">
-				<h:commandButton id="checkout" action="#{itemsBean.checkout}" value="Bestellung abschicken">
-					<f:setPropertyActionListener target="#{itemsBean.customer}" value="#{accountBean.customer.id}" />
-				</h:commandButton>
-			</h:form>
-		</c:if>
+		<h:link value="Zur Kasse" outcome="pay" />
 		<h:form id="clearForm">
 			<h:commandButton id="clear" action="#{itemsBean.clearBasket}" value="Warenkorb leeren" />
 		</h:form>

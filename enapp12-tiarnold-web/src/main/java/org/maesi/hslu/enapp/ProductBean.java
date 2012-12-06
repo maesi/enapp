@@ -19,7 +19,7 @@ public class ProductBean {
 	}
 
 	public ProductDto getProduct() {
-		Integer aId = 1;
+		String aId = "1";
 		return pm.get(aId);
 	}
 }

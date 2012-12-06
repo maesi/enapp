@@ -1,45 +1,49 @@
 package org.maesi.hslu.enapp.boundry;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 
-import org.maesi.hslu.enapp.control.ProductFacade;
+import org.maesi.hslu.enapp.control.DynNavFacade;
 import org.maesi.hslu.enapp.dto.ProductDto;
-import org.maesi.hslu.enapp.entity.Product;
+import org.maesi.hslu.enapp.ext.dynnav.Item;
 
 @Stateless
 @LocalBean
 public class ProductManager {
 
+	@Inject
+	DynNavFacade dynNav;
+	
 	public List<ProductDto> getList() {
 		List<ProductDto> _return = new ArrayList<ProductDto>();
 		
-		ProductFacade _facade = new ProductFacade();		
-		List<Product> _productEntities = _facade.findAll();
-		
-		for(Product _productEntity: _productEntities) {
-			_return.add(entityToDto(_productEntity));
-		}
+		getDynNavProducts(_return);
 			
 		return _return;	
 	}
+
+	private void getDynNavProducts(List<ProductDto> _return) {
+		Collection<Item> _items = dynNav.findAll();
+		for(Item _item : _items) {
+			_return.add(entityToDto(_item));
+		}
+	}
 	
-	public ProductDto get(Integer aId) {		
-		ProductFacade _facade = new ProductFacade();		
-		Product _productEntity = _facade.find(aId);
-			
-		return entityToDto(_productEntity);	
+	public ProductDto get(String aId) {				
+		return entityToDto(dynNav.find(aId));	
 	}
 
-	private ProductDto entityToDto(Product aEntity) {
-		ProductDto aDto = new ProductDto();
-		aDto.setId(aEntity.getId());
-		aDto.setName(aEntity.getName());
-		aDto.setUnitprice(aEntity.getUnitprice());		
-		return aDto;
+	private ProductDto entityToDto(Item aItem) {
+		ProductDto _dto = new ProductDto();
+		_dto.setId(aItem.getNo());
+		_dto.setName(aItem.getDescription());
+		_dto.setUnitprice(aItem.getUnitPrice());	
+		return _dto;
 	}
 
 }

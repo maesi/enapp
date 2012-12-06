@@ -1,12 +1,16 @@
-CREATE DATABASE `enappwebshop`;
+CREATE DATABASE IF NOT EXISTS `enappwebshop`;
+USE `enappwebshop`;
 
-CREATE TABLE IF NOT EXISTS `customer` (
+DROP TABLE IF EXISTS `customer`;
+CREATE TABLE `customer` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `username` varchar(15) NOT NULL COMMENT 'have to be unique',
+  `navisionid` varchar(32) DEFAULT NULL COMMENT 'navisionid',
   `password` varchar(32) DEFAULT NULL COMMENT 'md5 hash',
   `name` varchar(45) DEFAULT NULL,
   `address` varchar(45) DEFAULT NULL,
   `email` varchar(90) DEFAULT NULL,
+  `fk_group` int(10) unsigned DEFAULT 1, 
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
@@ -14,34 +18,27 @@ CREATE TABLE IF NOT EXISTS `customer` (
 -- Daten für Tabelle `customer`
 --
 
-INSERT INTO `customer` (`id`, `username`, `password`, `name`, `address`, `email`) VALUES
-(1, 'hans', 'f2a0ffe83ec8d44f2be4b624b0f47dde', 'Hans Muster', 'Musterstrasse, 6000 Luzern', 'hans@muster.ch'),
-(2, 'urs', '134edc12dcc61911b084b3e06e4ab16d', 'Urs Wyss', 'Luzernerstrasse 10, 3000 Bern', 'urs@bluewin.ch');
+INSERT INTO `customer` (`id`, `username`, `password`, `name`, `address`, `email`, `fk_group`) VALUES
+(1, 'hans', 'f2a0ffe83ec8d44f2be4b624b0f47dde', 'Hans Muster', 'Musterstrasse, 6000 Luzern', 'hans@muster.ch', 1),
+(2, 'urs', '134edc12dcc61911b084b3e06e4ab16d', 'Urs Wyss', 'Luzernerstrasse 10, 3000 Bern', 'urs@bluewin.ch', 2);
 
--- --------------------------------------------------------
-
---
--- Tabellenstruktur für Tabelle `product`
---
-
-CREATE TABLE IF NOT EXISTS `product` (
+DROP TABLE IF EXISTS `customergroup`;
+CREATE TABLE `customergroup` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(45) NOT NULL COMMENT 'contain surname and last name',
-  `description` varchar(45) DEFAULT NULL,
-  `mediapath` varchar(180) DEFAULT NULL COMMENT 'relative path to the media file',
-  `unitprice` decimal(10,0) DEFAULT NULL,
+  `name` varchar(15) NOT NULL COMMENT 'have to be unique',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB;
+INSERT INTO `customergroup` (`name`) VALUES
+('user'),
+('admin');
 
---
--- Daten für Tabelle `product`
---
+DROP VIEW IF EXISTS `jaas_view`;
+CREATE VIEW `jaas_view` AS
+SELECT  c.`username`, c.`password`, g.`name`
+ FROM `customer` c
+ LEFT JOIN `customergroup` g ON g.`id` =  c.`fk_group`;
 
-INSERT INTO `product` (`id`, `name`, `description`, `mediapath`, `unitprice`) VALUES
-(1, 'Maven 3', 'Konfigurationsmanagement mit Java', '978-3-8266-9118-8', 30),
-(2, 'Clean Code', 'Refacotring, Patterns, Testen und Technicken ', '978-3-8266-5548-7', 40),
-(3, 'Software-Sanierung', 'Weiterntwicklung, Testen und Refacotring best', '978-3-8266-5072-7', 45),
-(4, 'Enterprise JavaBeans 3.1', 'Einstieg, Umstieg, Praxis und Referenz', '978-3-8266-9066-2', 49);
+
 
 -- --------------------------------------------------------
 
@@ -49,7 +46,8 @@ INSERT INTO `product` (`id`, `name`, `description`, `mediapath`, `unitprice`) VA
 -- Tabellenstruktur für Tabelle `purchase`
 --
 
-CREATE TABLE IF NOT EXISTS `purchase` (
+DROP TABLE IF EXISTS `purchase`;
+CREATE TABLE `purchase` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `customerid` int(10) unsigned NOT NULL,
   `datetime` datetime DEFAULT NULL COMMENT 'Date / Time of purchase',
@@ -71,10 +69,11 @@ INSERT INTO `purchase` (`id`, `customerid`, `datetime`, `status`) VALUES
 -- Tabellenstruktur für Tabelle `purchaseitem`
 --
 
-CREATE TABLE IF NOT EXISTS `purchaseitem` (
+DROP TABLE IF EXISTS `purchaseitem`;
+CREATE TABLE `purchaseitem` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `purchaseid` int(10) unsigned NOT NULL,
-  `productid` int(10) unsigned NOT NULL,
+  `productid` varchar(30) NOT NULL,
   `quantity` decimal(10,0) DEFAULT NULL COMMENT 'by a mp3 shop, generally one',
   `unitprice` decimal(10,0) DEFAULT NULL,
   `lineamount` decimal(10,0) DEFAULT NULL COMMENT 'total cost per line',

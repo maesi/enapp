@@ -11,6 +11,7 @@
 		<module>../enapp12-tiarnold-ear</module>
 		<module>../enapp12-tiarnold-web</module>
 		<module>../enapp12-tiarnold-ejb</module>
+		<module>../../../workspace/enapp12-tiarnold-aminweb</module>
 	</modules>
 	<build>
 		<defaultGoal>test</defaultGoal>

@@ -52,8 +52,10 @@ CREATE TABLE `purchase` (
   `customerid` int(10) unsigned NOT NULL,
   `datetime` datetime DEFAULT NULL COMMENT 'Date / Time of purchase',
   `status` varchar(15) DEFAULT NULL COMMENT 'state of purchase',
+  `totalamount` decimal(10,0) DEFAULT NULL COMMENT 'total cost',
+  `paymentid` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=200 ;
 
 --
 -- Daten für Tabelle `purchase`

@@ -1,6 +1,8 @@
 package org.maesi.hslu.enapp.entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+
 import javax.persistence.*;
 
 import java.util.Date;
@@ -15,7 +17,7 @@ import java.util.Date;
 @NamedQueries({ @NamedQuery(name = "purchase.findAllByUserId", query = "SELECT p FROM Purchase p  WHERE p.customerid = :userId")})
 public class Purchase implements Serializable {
 	private static final long serialVersionUID = 1L;
-
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
@@ -28,7 +30,18 @@ public class Purchase implements Serializable {
 
 	@Column(length=15)
 	private String status;
+
+	@Column(precision=10)
+	private BigDecimal totalamount;
 	
+	public BigDecimal getTotalamount() {
+		return totalamount;
+	}
+
+	public void setTotalamount(BigDecimal totalamount) {
+		this.totalamount = totalamount;
+	}
+
 	@Column
 	private int paymentid;
 

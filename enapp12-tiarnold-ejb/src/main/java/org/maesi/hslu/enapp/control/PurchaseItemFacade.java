@@ -5,7 +5,6 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import org.maesi.hslu.enapp.entity.Customer;
 import org.maesi.hslu.enapp.entity.Purchase;
 import org.maesi.hslu.enapp.entity.Purchaseitem;
 
@@ -22,10 +21,11 @@ public class PurchaseItemFacade extends AbstractFacade<Purchaseitem> {
 		return em;
 	}
 
-	public List<Purchase> findAllByUserId(Integer aUserId) {
-		Query _query = em.createNamedQuery("purchase.findAllByUserId",
-				Purchase.class);
-		_query.setParameter("userId", aUserId);
+	
+	public List<Purchaseitem> findAllByPurchaseId(Integer aPurchsesId) {
+		Query _query = em.createNamedQuery("purchase.findAllByPurchaseId",
+				Purchaseitem.class);
+		_query.setParameter("purchaseId", aPurchsesId);
 		return _query.getResultList();
 	}
 }

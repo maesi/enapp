@@ -10,6 +10,7 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
+import org.maesi.hslu.enapp.control.EnappDeamonFacade;
 import org.maesi.hslu.enapp.control.PostfinanceFacade;
 import org.maesi.hslu.enapp.control.PurchaseFacade;
 import org.maesi.hslu.enapp.control.PurchaseItemFacade;
@@ -48,9 +49,14 @@ public class PurchaseManager {
 		return _purchase.getId();		
 	}
 	
-	 
+	private void updatePaymentTotalAmount(Integer aId, BigDecimal aTotalAmount) {
+		PurchaseFacade _facade = new PurchaseFacade();
+		Purchase _pur = _facade.find(aId);
+		_pur.setTotalamount(aTotalAmount);
+		_facade.edit(_pur);
+	} 
 	
-	 private void updatePaymentId(Integer aId, Integer aPaymentId) {
+	private void updatePaymentId(Integer aId, Integer aPaymentId) {
 			PurchaseFacade _facade = new PurchaseFacade();
 			Purchase _pur = _facade.find(aId);
 			_pur.setPaymentid(aPaymentId);
@@ -84,7 +90,7 @@ public class PurchaseManager {
 	public List<PurchaseDto> getPurchase(Integer aUserId) {
 		List<PurchaseDto> _return = new ArrayList<PurchaseDto>();
 		
-		PurchaseItemFacade _facade = new PurchaseItemFacade();
+		PurchaseFacade _facade = new PurchaseFacade();
 		List<Purchase> _entities = _facade.findAllByUserId(aUserId);
 		for(Purchase _entity : _entities) {
 			_return.add(entityToDto(_entity));
@@ -102,6 +108,9 @@ public class PurchaseManager {
 
 	@Inject
 	PostfinanceFacade pfFacade;
+
+	@Inject
+	EnappDeamonFacade daemonFacade;
 	
 	public void create(int aCustomerId, Map<String, Integer> aItems,
 			CreditCardDto aCreditCard) {
@@ -123,22 +132,31 @@ public class PurchaseManager {
         	_amount.add(savePurchaseItem(_purchaseId, _key, new BigDecimal(aItems.get(_key))));
         }
         
-        _amount.add(savePurchaseItem(_purchaseId, "ART0000225", new BigDecimal(3)));
-       
+        _amount = _amount.add(savePurchaseItem(_purchaseId, "ART0000225", new BigDecimal(3)));
+        
+        updatePaymentTotalAmount(_purchaseId, _amount);
+        
+        System.out.println("Amount : " + _amount.toString());
         payment.setAmount(_amount);
+        System.out.println("PaymentAmount : " + payment.getAmount());
         
         
         
         try {
 			int i = pfFacade.doPayment(payment);
+			System.out.println("Payment-ID: " + i);
 			updatePaymentId(_purchaseId, i);
+			System.out.println("Payment-ID updated");
 	        
 	        updatePurchaseState(_purchaseId, "payed");
+			System.out.println("Payment-Status updated");
 		} catch (Exception e) {
 			System.out.println("Fehler beim Bestellvorgang: " + e.getMessage());
 		}
         
-        
+        PurchaseFacade _facade = new PurchaseFacade();
+		Purchase _pur = _facade.find(_purchaseId);
+        daemonFacade.sendPurchase(_pur);
 		
 	}
 

@@ -46,7 +46,7 @@ public class PostfinanceFacade {
         PaymentRequest _return = new PaymentRequest();
         _return.setPurchaseId("TIARNOLD" + payment.getPurchaseId());
         _return.setCurrency( "CHF");
-        _return.setAmount(payment.getAmount().multiply(new BigDecimal(100)).toString());
+        _return.setAmount(String.valueOf(payment.getAmount().longValue()*100));
         _return.setCardNumber(String.valueOf(payment.getCreditCardNumber()));
         _return.setCardCvc(String.valueOf(payment.getCreditCardCvc()));
         _return.setCardExpiryDate(payment.getCreditCardExpire());

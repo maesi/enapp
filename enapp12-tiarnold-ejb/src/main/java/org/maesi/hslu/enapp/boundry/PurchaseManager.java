@@ -10,6 +10,7 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
+import org.maesi.hslu.enapp.control.CustomerFacade;
 import org.maesi.hslu.enapp.control.EnappDeamonFacade;
 import org.maesi.hslu.enapp.control.PostfinanceFacade;
 import org.maesi.hslu.enapp.control.PurchaseFacade;
@@ -18,8 +19,10 @@ import org.maesi.hslu.enapp.dto.CreditCardDto;
 import org.maesi.hslu.enapp.dto.Payment;
 import org.maesi.hslu.enapp.dto.ProductDto;
 import org.maesi.hslu.enapp.dto.PurchaseDto;
+import org.maesi.hslu.enapp.entity.Customer;
 import org.maesi.hslu.enapp.entity.Purchase;
 import org.maesi.hslu.enapp.entity.Purchaseitem;
+import org.maesi.hslu.enapp.ext.enappdeamon.SalesOrder;
 
 /**
  * Session Bean implementation class PurchaseManager
@@ -70,6 +73,13 @@ public class PurchaseManager {
 		_facade.edit(_pur);
 	}
 	
+	private void updateCorrelationId(Integer aId, String aCorrId) {
+		PurchaseFacade _facade = new PurchaseFacade();
+		Purchase _pur = _facade.find(aId);
+		_pur.setCorrelationid(aCorrId);
+		_facade.edit(_pur);
+	}
+	
 	private BigDecimal savePurchaseItem(Integer aPurchase, String aProduct, BigDecimal aQuantity) {
 		Purchaseitem _purchaseItem = new Purchaseitem();
 		_purchaseItem.setPurchaseid(aPurchase);
@@ -101,8 +111,11 @@ public class PurchaseManager {
 
 	private PurchaseDto entityToDto(Purchase _entity) {
 		PurchaseDto _dto = new PurchaseDto();
+		_dto.setId(_entity.getId());
 		_dto.setDate(_entity.getDatetime());
 		_dto.setState(_entity.getStatus());
+		_dto.setCustomerId(_entity.getCustomerid());
+		_dto.setCorrelationId(_entity.getCorrelationid());
 		return _dto;
 	}
 
@@ -111,6 +124,9 @@ public class PurchaseManager {
 
 	@Inject
 	EnappDeamonFacade daemonFacade;
+
+	@Inject
+	CustomerManager customerManager;
 	
 	public void create(int aCustomerId, Map<String, Integer> aItems,
 			CreditCardDto aCreditCard) {
@@ -156,8 +172,29 @@ public class PurchaseManager {
         
         PurchaseFacade _facade = new PurchaseFacade();
 		Purchase _pur = _facade.find(_purchaseId);
-        daemonFacade.sendPurchase(_pur);
-		
+        String _correlationId = daemonFacade.sendPurchase(_pur);
+
+		System.out.println("CorrelationId: " + _correlationId);
+		updateCorrelationId(_purchaseId, _correlationId);
+        
+		updateOrderState(_purchaseId);
+	}
+
+	public void updateOrderState(Integer aPurchaseId) {
+		try {
+			PurchaseFacade _facade = new PurchaseFacade();
+			Purchase _pur = _facade.find(aPurchaseId);
+					
+			SalesOrder _order = daemonFacade.getOrderState(_pur.getCorrelationid());
+			if(_order.getExternalCustomerId() != null && !_order.getExternalCustomerId().isEmpty()) {
+				System.out.println("ExternaalCustomerId: " + _order.getExternalCustomerId());
+				customerManager.setNavisionId(_pur.getCustomerid(), _order.getExternalCustomerId());
+			} else {
+				System.out.println("Empty ExternalCustomerId");
+			}
+		} catch (Exception e) {
+			System.out.println("Fehler beim Bestellungsupdate: " + e.getMessage());
+		}
 	}
 
 }

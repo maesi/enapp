@@ -40,4 +40,19 @@ public class PurchaseBean {
 	public void setCreditCard(CreditCardDto creditCard) {
 		this.creditCard = creditCard;
 	}
+	
+	private Integer purchaseId;
+	
+	public Integer getPurchaseId() {
+		return purchaseId;
+	}
+
+	public void setPurchaseId(Integer purchaseId) {
+		this.purchaseId = purchaseId;
+	}
+
+	public void updateOrderState() {
+		
+		purchaseManager.updateOrderState(purchaseId);
+	}
 }

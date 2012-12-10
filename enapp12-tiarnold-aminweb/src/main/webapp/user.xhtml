@@ -10,9 +10,8 @@
 			<h:panelGrid id="grid" columns="2">
 				<h:outputLabel value="Kundenname" for="userName" />
 				<h:inputText value="#{customerBean.customer.name}" />
-				<h:outputLabel value="NavisionId" for="realName" />
-				<h:inputText id="realName" value="#{customerBean.customer.navisionid}" />
-				<h:outputLabel value="Adresse" for="adress" />
+				<h:outputLabel value="NavisionId" for="navisionid" />
+				<h:inputText id="navisionid" value="#{customerBean.customer.navisionid}" />
 				<h:commandButton id="update" value="Speichern"
 					action="#{customerBean.update}" />
 			</h:panelGrid>

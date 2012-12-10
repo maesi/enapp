@@ -11,10 +11,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class SalesOrder {
 
-    private static final String STATUS_PROCESSING = "00";
-    private static final String STATUS_FAILED = "10";
-    private static final String STATUS_OK = "000";
-    private static final String STATUS_CUSTOMERCREATED = "010";
     @XmlElement(name = "correlationId")
     private String correlationId;
     @XmlElement(name = "dynNAVCustomerNo")
@@ -82,19 +78,4 @@ public class SalesOrder {
         return studentName;
     }
 
-    public boolean isProcessing() {
-        return getOrderStatus().equals(STATUS_PROCESSING);
-    }
-
-    public boolean hasFailed() {
-        return getOrderStatus().equals(STATUS_FAILED);
-    }
-
-    public boolean wasCustomerCreated() {
-        return getOrderStatus().equals(STATUS_CUSTOMERCREATED);
-    }
-
-    public boolean isOk() {
-        return getOrderStatus().equals(STATUS_OK) || wasCustomerCreated();
-    }
 }

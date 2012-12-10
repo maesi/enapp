@@ -1,11 +1,9 @@
 package org.maesi.hslu.enapp.control;
 
-import java.math.BigDecimal;
 import java.net.ProxySelector;
 import java.net.URI;
 
 import javax.ejb.Stateless;
-import javax.inject.Inject;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 
@@ -22,7 +20,7 @@ import org.maesi.hslu.enapp.ext.postfinance.PostRequest;
 public class PostfinanceFacade {
 
 
-    public int doPayment(Payment payment) throws Exception {
+	public int doPayment(Payment payment) throws Exception {
     	PostRequest postRequest = new PostRequest();
     	HttpPost httpPostRequest = postRequest.composeRequest(createPaymentRequest(payment));
     	httpPostRequest.setURI(URI.create("https://e-payment.postfinance.ch/ncol/test/orderdirect.asp"));
@@ -38,6 +36,7 @@ public class PostfinanceFacade {
         }
         checkHttpState(httpResponse);
         NcResponse response = unmarshalResponse(httpResponse);
+        
         checkResponse(response);
         return response.getPaymentId();
     }

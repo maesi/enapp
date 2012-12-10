@@ -30,17 +30,12 @@ public class Purchase implements Serializable {
 
 	@Column(length=15)
 	private String status;
+	
+	@Column(length=15)
+	private String correlationid;
 
 	@Column(precision=10)
 	private BigDecimal totalamount;
-	
-	public BigDecimal getTotalamount() {
-		return totalamount;
-	}
-
-	public void setTotalamount(BigDecimal totalamount) {
-		this.totalamount = totalamount;
-	}
 
 	@Column
 	private int paymentid;
@@ -88,4 +83,21 @@ public class Purchase implements Serializable {
 		this.paymentid = paymentid;
 	}
 
+	public String getCorrelationid() {
+		return correlationid;
+	}
+
+	public void setCorrelationid(String correlationid) {
+		this.correlationid = correlationid;
+	}
+
+	
+	public BigDecimal getTotalamount() {
+		return totalamount;
+	}
+
+	public void setTotalamount(BigDecimal totalamount) {
+		this.totalamount = totalamount;
+	}
+	
 }
